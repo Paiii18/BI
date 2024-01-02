@@ -76,6 +76,8 @@ public class AddGuidanceActivity extends AppCompatActivity {
         finish(); // Sebagai contoh, menutup Activity setelah berpindah ke MainActivity
     }
 
+
+
     private boolean validateInputs() {
         if (TextUtils.isEmpty(edCourseName.getText().toString().trim())) {
             edCourseName.setError("Course name is required");

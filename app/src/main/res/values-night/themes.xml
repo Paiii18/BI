@@ -1,0 +1,15 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.BI" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <item name="colorSecondary">@color/black</item>
+
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <style name="Theme.BI.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

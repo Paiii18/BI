@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "29471442480",
+    "project_id": "bimbingan-informatika",
+    "storage_bucket": "bimbingan-informatika.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29471442480:android:d019391ff0dec5b910cff5",
+        "android_client_info": {
+          "package_name": "com.example.bi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtOGLW34rU0tvsk9zT4xdzTKFWMs_vfsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,6 +8,7 @@
 
         <item name="colorSecondary">@color/black</item>
 
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="android:windowBackground">@color/white</item>
     </style>
 

@@ -6,6 +6,6 @@
         android:id="@+id/action_insert"
         android:icon="@drawable/ic_checklist"
         android:title="@string/insert_guidance"
-        app:showAsAction="ifRoom" />
-
+        app:showAsAction="always" />
 </menu>
+

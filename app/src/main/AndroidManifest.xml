@@ -13,6 +13,13 @@
         android:theme="@style/Theme.BI"
         tools:targetApi="31">
         <activity
+            android:name=".ui.list.ListActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.add.AddGuidanceActivity"
             android:exported="false" />
         <activity
@@ -27,9 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.Main.MainActivity"
-            android:exported="false" />
+
     </application>
 
 </manifest>

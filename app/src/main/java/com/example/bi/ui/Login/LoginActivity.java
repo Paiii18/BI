@@ -9,8 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bi.R;
-import com.example.bi.ui.Main.MainActivity;
 import com.example.bi.ui.Register.RegisterActivity;
+import com.example.bi.ui.list.ListActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             // Contoh: Anda bisa memeriksa kecocokan NPM dan password dengan data yang ada
 
             // Jika autentikasi berhasil, arahkan pengguna ke MainActivity
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, ListActivity.class);
             startActivity(intent);
             finish(); // Menutup LoginActivity agar tidak kembali ke sini setelah login berhasil
         }

@@ -1,91 +1,111 @@
 package com.example.bi.ui.add;
 
-import android.content.Intent;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-
-
+import androidx.lifecycle.ViewModelProvider;
 import com.example.bi.R;
-import com.example.bi.ui.Main.MainActivity;
+import com.example.bi.util.TimePickerFragment;
+import com.google.android.material.textfield.TextInputEditText;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
-
-
-public class AddGuidanceActivity extends AppCompatActivity {
-
-    private EditText edCourseName, edLecturer, edNote;
-    private Spinner spinnerDay;
-    private TextView tvStartTime, tvEndTime;
+public class AddGuidanceActivity extends AppCompatActivity implements TimePickerFragment.DialogTimeListener {
+    private String startTime = "";
+    private String endTime = "";
+    private AddCourseViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_guidance);
-
-        edCourseName = findViewById(R.id.ed_course_name);
-        edLecturer = findViewById(R.id.ed_lecturer);
-        edNote = findViewById(R.id.ed_note);
-        spinnerDay = findViewById(R.id.spinner_day);
-        tvStartTime = findViewById(R.id.tv_start_time);
-        tvEndTime = findViewById(R.id.tv_end_time);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        AddCourseViewModelFactory factory = AddCourseViewModelFactory.createFactory(this);
+        viewModel = new ViewModelProvider(this, factory).get(AddCourseViewModel.class);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_add, menu);
-        return true;
+        return true; // Mengembalikan true untuk menunjukkan bahwa menu telah berhasil dibuat
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_insert) {
-            if (validateInputs()) {
-                saveToDatabaseAndNavigate();
-            }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
             return true;
+        } else if (id == R.id.action_insert) {
+            TextInputEditText edCourseName = findViewById(R.id.ed_course_name);
+            Spinner spinnerDay = findViewById(R.id.spinner_day);
+            TextInputEditText edLecturer = findViewById(R.id.ed_lecturer);
+            TextInputEditText edNote = findViewById(R.id.ed_note);
+            String courseName = edCourseName.getText().toString();
+            String day = spinnerDay.getSelectedItem().toString();
+            int dayNumber = getDayNumberByDayName(day);
+            String lecturer = edLecturer.getText().toString();
+            String note = edNote.getText().toString();
+            if (courseName.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || dayNumber == -1 || lecturer.isEmpty() || note.isEmpty()) {
+                Log.d("AddGuidanceActivity", "Data tidak lengkap");
+                return false;
+            } else {
+                viewModel.insertCourse(courseName, dayNumber, startTime, endTime, lecturer, note);
+                finish();
+                Log.d("AddGuidanceActivity", "Data berhasil disimpan");
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private void saveToDatabaseAndNavigate() {
-        String courseName = edCourseName.getText().toString().trim();
-        String lecturer = edLecturer.getText().toString().trim();
-        String note = edNote.getText().toString().trim();
-        String selectedDay = spinnerDay.getSelectedItem().toString();
-        String startTime = tvStartTime.getText().toString().trim();
-        String endTime = tvEndTime.getText().toString().trim();
-
-        // TO-DO: Simpan data ke database
-        // Guidance guidance = new Guidance(courseName, lecturer, note, selectedDay, startTime, endTime);
-        // long insertedRowId = DatabaseHelper.getInstance(getApplicationContext()).insertGuidance(guidance);
-
-        // TO-DO: Tindakan setelah penyimpanan berhasil atau gagal
-        // Misalnya, tampilkan pesan dan navigasi ke halaman utama
-        Toast.makeText(this, "Data saved successfully", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(AddGuidanceActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish(); // Sebagai contoh, menutup Activity setelah berpindah ke MainActivity
+    public void showStartTimePicker(View view) {
+        TimePickerFragment timePickerFragment = new TimePickerFragment();
+        timePickerFragment.show(getSupportFragmentManager(), "startPicker");
     }
 
+    public void showEndTimePicker(View view) {
+        TimePickerFragment timePickerFragment = new TimePickerFragment();
+        timePickerFragment.show(getSupportFragmentManager(), "endPicker");
+    }
 
-
-    private boolean validateInputs() {
-        if (TextUtils.isEmpty(edCourseName.getText().toString().trim())) {
-            edCourseName.setError("Course name is required");
-            return false;
+    @Override
+    public void onDialogTimeSet(String tag, int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        switch (tag) {
+            case "startPicker":
+                TextView tvStartTime = findViewById(R.id.tv_start_time);
+                tvStartTime.setText(timeFormat.format(calendar.getTime()));
+                startTime = timeFormat.format(calendar.getTime());
+                break;
+            case "endPicker":
+                TextView tvEndTime = findViewById(R.id.tv_end_time);
+                tvEndTime.setText(timeFormat.format(calendar.getTime()));
+                endTime = timeFormat.format(calendar.getTime());
+                break;
         }
-        // Lakukan validasi lainnya di sini sesuai kebutuhan
+    }
 
-        return true;
+    private int getDayNumberByDayName(String dayName) {
+        String[] days = getResources().getStringArray(R.array.day);
+        for (int i = 0; i < days.length; i++) {
+            if (days[i].equals(dayName)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
-

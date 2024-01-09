@@ -21,7 +21,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.add.AddGuidanceActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light"/>
+
         <activity
             android:name=".ui.Register.RegisterActivity"
             android:exported="false" />

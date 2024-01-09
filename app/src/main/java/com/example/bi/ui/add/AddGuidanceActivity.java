@@ -43,32 +43,44 @@ public class AddGuidanceActivity extends AppCompatActivity implements TimePicker
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
-        } else if (id == R.id.action_insert) {
+        } else if (item.getItemId() == R.id.action_insert) {
             TextInputEditText edCourseName = findViewById(R.id.ed_course_name);
-            Spinner spinnerDay = findViewById(R.id.spinner_day);
-            TextInputEditText edLecturer = findViewById(R.id.ed_lecturer);
-            TextInputEditText edNote = findViewById(R.id.ed_note);
             String courseName = edCourseName.getText().toString();
-            String day = spinnerDay.getSelectedItem().toString();
-            int dayNumber = getDayNumberByDayName(day);
+
+            Spinner spinnerDay = findViewById(R.id.spinner_day);
+            String selectedDay = spinnerDay.getSelectedItem().toString();
+            int spinnerDayNumber = getDayNumberByDayName(selectedDay);
+
+            TextInputEditText edLecturer = findViewById(R.id.ed_lecturer);
             String lecturer = edLecturer.getText().toString();
+
+            TextInputEditText edNote = findViewById(R.id.ed_note);
             String note = edNote.getText().toString();
-            if (courseName.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || dayNumber == -1 || lecturer.isEmpty() || note.isEmpty()) {
-                Log.d("AddGuidanceActivity", "Data tidak lengkap");
+
+            if (courseName.isEmpty() || startTime.isEmpty() || endTime.isEmpty() ||
+                    spinnerDayNumber == -1 || lecturer.isEmpty() || note.isEmpty()) {
+                Toast.makeText(this, "Harap isi semua bidang.", Toast.LENGTH_SHORT).show();
                 return false;
             } else {
-                viewModel.insertCourse(courseName, dayNumber, startTime, endTime, lecturer, note);
-                finish();
-                Log.d("AddGuidanceActivity", "Data berhasil disimpan");
+                viewModel.insertCourse(courseName, spinnerDayNumber, startTime, endTime, lecturer, note);
+                viewModel.getSaved().observe(this, event -> {
+                    if (event.getContentIfNotHandled()) {
+                        Toast.makeText(this, "Data berhasil ditambahkan.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Gagal menambahkan data.", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 return true;
             }
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
+
     public void showStartTimePicker(View view) {
         TimePickerFragment timePickerFragment = new TimePickerFragment();
         timePickerFragment.show(getSupportFragmentManager(), "startPicker");

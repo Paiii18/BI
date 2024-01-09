@@ -12,6 +12,10 @@
         <item name="android:windowBackground">@color/white</item>
     </style>
 
+    <style name="Theme.BI.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
     <style name="Theme.BI.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark" />
     

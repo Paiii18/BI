@@ -41,9 +41,10 @@ public class AdapterMain extends PagedListAdapter<Course, CourseViewHolder> {
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         Course item = getItem(position);
         if (item != null) {
-            holder.bind(item, (CourseViewHolder.OnItemClickListener) clickListener);
+            holder.bind(item, clickListener::onItemClick);
         }
     }
+
 
     public interface OnCourseItemClickListener {
         void onItemClick(Course course);

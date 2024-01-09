@@ -1,17 +1,25 @@
 package com.example.bi.util;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum DayName {
+    SUNDAY("Sunday"),
     MONDAY("Monday"),
     TUESDAY("Tuesday"),
     WEDNESDAY("Wednesday"),
     THURSDAY("Thursday"),
     FRIDAY("Friday"),
-    SATURDAY("Saturday"),
-    SUNDAY("Sunday");
+    SATURDAY("Saturday");
 
     private final String value;
+    private static final Map<Integer, DayName> map = new HashMap<>();
+
+    static {
+        for (DayName day : DayName.values()) {
+            map.put(day.ordinal(), day);
+        }
+    }
 
     DayName(String value) {
         this.value = value;
@@ -21,24 +29,7 @@ public enum DayName {
         return value;
     }
 
-    public static String getByNumber(int dayNumber) {
-        switch (dayNumber) {
-            case Calendar.MONDAY:
-                return MONDAY.getValue();
-            case Calendar.TUESDAY:
-                return TUESDAY.getValue();
-            case Calendar.WEDNESDAY:
-                return WEDNESDAY.getValue();
-            case Calendar.THURSDAY:
-                return THURSDAY.getValue();
-            case Calendar.FRIDAY:
-                return FRIDAY.getValue();
-            case Calendar.SATURDAY:
-                return SATURDAY.getValue();
-            case Calendar.SUNDAY:
-                return SUNDAY.getValue();
-            default:
-                return MONDAY.getValue();
-        }
+    public static DayName valueOf(int ordinal) {
+        return map.get(ordinal);
     }
 }

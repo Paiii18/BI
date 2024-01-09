@@ -7,7 +7,7 @@
     <string name="password">Password</string>
     <string name="no_have_account">Belum memiliki akun?</string>
     <string name="register_here">Daftar </string>
-
+    <string name="title_activity_list">Bimbingan Informatika</string>
     <string name="name">Nama</string>
     <string name="name_input">Masukkan Nama</string>
     <string name="npm_input">Masukkan NPM/NIK</string>

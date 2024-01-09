@@ -21,7 +21,7 @@ public class CourseViewHolder extends RecyclerView.ViewHolder {
     public void bind(Course course, OnItemClickListener clickListener) {
         this.course = course;
 
-        DayName dayName = DayName.valueOf(DayName.getByNumber(course.getDay()));
+        DayName dayName = DayName.valueOf(course.getDay());
         TextView tvCourse = itemView.findViewById(R.id.tv_course);
         String timeFormat = String.format(timeString, dayName, course.getStartTime(), course.getEndTime());
         TextView tvLecturer = itemView.findViewById(R.id.tv_lecturer);

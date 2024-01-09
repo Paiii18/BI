@@ -92,4 +92,13 @@ public class DataRepository {
     public void insertCourse(Course course) {
         executor.execute(() -> courseDao.insert(course));
     }
+
+    public void delete(final Course course) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                courseDao.delete(course);
+            }
+        });
+    }
 }

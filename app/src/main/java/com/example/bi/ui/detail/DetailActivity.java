@@ -33,7 +33,7 @@ public class DetailActivity extends AppCompatActivity {
     private void showCourseDetail(Course course) {
         if (course != null) {
             String timeString = getString(R.string.time_format);
-            DayName dayName = DayName.valueOf(DayName.getByNumber(course.getDay()));
+            DayName dayName = DayName.valueOf(course.getDay());
             String timeFormat = String.format(timeString, dayName, course.getStartTime(), course.getEndTime());
 
             TextView tvCourseName = findViewById(R.id.tv_course_name);
